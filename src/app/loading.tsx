@@ -1,0 +1,1 @@
+export default function Loading() { return <main className="centered-page"><div className="loading-card"><span className="brand-loader" /><h1>Preparing your journey</h1><p>Checking the latest railway information.</p><div className="loading-bar" /></div></main>; }

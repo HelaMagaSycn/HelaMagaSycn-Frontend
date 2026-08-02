@@ -1,0 +1,9 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { BadgeCheck, Mail, ShieldCheck, UserRound } from "lucide-react";
+import { ProtectedPage } from "@/components/protected-page";
+import { api } from "@/lib/api";
+import { useAuth } from "@/providers/auth-provider";
+
+export default function ProfilePage(){const {accessToken,user}=useAuth();const profile=useQuery({queryKey:["profile",accessToken],queryFn:()=>api.profile(accessToken!),enabled:Boolean(accessToken)});return <ProtectedPage><main className="account-page"><div className="page-shell profile-shell"><div className="account-heading"><div><span className="eyebrow">Passenger account</span><h1>Profile & identity</h1><p>Your verified details used for reserved railway bookings.</p></div></div><div className="profile-grid"><section className="profile-card"><div className="profile-banner"><span className="avatar xl">{(profile.data?.fullName??"P").slice(0,1)}</span><div><h2>{profile.data?.fullName??"Passenger"}</h2><span><BadgeCheck/>Verified passenger</span></div></div><div className="profile-details"><label><UserRound/>Full name<span>{profile.data?.fullName??"Loading…"}</span></label><label><Mail/>Email address<span>{profile.data?.email??user?.profile.email?.toString()??"Loading…"}</span></label><label><ShieldCheck/>NIC number<span>{profile.data?.nic??"Loading…"}</span></label></div><p className="profile-help">To protect your tickets, NIC and email changes require passenger-support verification.</p></section><aside className="account-security"><span><ShieldCheck/></span><h2>Account security</h2><p>Password and session security are managed by HelaMaga Identity using OpenID Connect.</p><button className="button button-secondary">Manage sign-in security</button><dl><div><dt>Email verified</dt><dd>Yes</dd></div><div><dt>Account role</dt><dd>Passenger</dd></div><div><dt>Active session</dt><dd>Protected</dd></div></dl></aside></div></div></main></ProtectedPage>}
